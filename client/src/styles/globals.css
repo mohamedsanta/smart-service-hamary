@@ -1,0 +1,116 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;900&family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Noto+Kufi+Arabic:wght@700;900&family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --cream: #f5ecd9;
+  --cream-deep: #ede0c4;
+  --sand: #d9c59a;
+  --terracotta: #b04a2a;
+  --terracotta-dark: #8a3519;
+  --rust: #6b2712;
+  --ochre: #c88a3d;
+  --ink: #231712;
+  --ink-soft: #4a342a;
+  --gold-accent: #d4a24a;
+  --success: #4a6b3a;
+  --line: #c7b38a;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--cream);
+  color: var(--ink);
+}
+
+body {
+  font-family: 'Cormorant Garamond', serif;
+  background-color: var(--cream);
+  color: var(--ink);
+  position: relative;
+}
+
+/* Paper grain noise overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.28;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.4'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 128px 128px;
+  mix-blend-mode: overlay;
+}
+
+/* RTL support */
+[dir='rtl'] body {
+  font-family: 'Amiri', serif;
+}
+
+[dir='rtl'] .font-display {
+  font-family: 'Noto Kufi Arabic', sans-serif;
+}
+
+/* Utility classes */
+.font-display {
+  font-family: 'Playfair Display', serif;
+}
+
+[dir='rtl'] h1, [dir='rtl'] h2, [dir='rtl'] h3 {
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  line-height: 1.5;
+}
+
+[dir='rtl'] p, [dir='rtl'] label, [dir='rtl'] span {
+  font-family: 'Tajawal', sans-serif;
+  line-height: 1.8;
+}
+
+/* Flip directional icons in RTL */
+[dir='rtl'] .flip-rtl {
+  transform: scaleX(-1);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--cream-deep); }
+::-webkit-scrollbar-thumb { background: var(--sand); border-radius: 3px; }
+
+/* Focus ring */
+*:focus-visible {
+  outline: 2px solid var(--terracotta);
+  outline-offset: 2px;
+}
+
+.btn-primary {
+  @apply bg-terracotta hover:bg-terracotta-dark text-cream font-inter font-semibold px-6 py-3 rounded transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0;
+}
+
+.btn-secondary {
+  @apply border-2 border-terracotta text-terracotta hover:bg-terracotta hover:text-cream font-inter font-semibold px-6 py-3 rounded transition-all duration-200;
+}
+
+.section-title {
+  @apply text-4xl font-display font-bold text-ink;
+}
+
+.card {
+  @apply bg-cream-deep rounded-xl p-6 shadow-sm border border-line;
+}
+
+/* Animated dashed route line */
+@keyframes dash {
+  to { stroke-dashoffset: 0; }
+}
+
+.route-line {
+  animation: dash 2s linear infinite;
+}
+
+.input {
+  @apply bg-cream border border-line rounded-lg px-4 py-2.5 text-sm font-inter text-ink outline-none focus:border-terracotta focus:ring-1 focus:ring-terracotta/30 transition-colors placeholder:text-ink-soft/40;
+}

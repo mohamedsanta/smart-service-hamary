@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Booking {
+  id             String    @id @default(cuid())
+  reference      String    @unique
+  customerName   String
+  phone          String
+  email          String
+  whatsappOptIn  Boolean   @default(true)
+  city           String
+  address        String
+  notes          String?
+  quantity       Int
+  tier           String
+  deliveryOption String
+  preferredDate  DateTime
+  subtotal       Float
+  discount       Float
+  vat            Float
+  total          Float
+  language       String    @default("en")
+  status         String    @default("pending")
+  paymentRef     String?
+  paidAt         DateTime?
+  deliveredAt    DateTime?
+  invoicePath    String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model InventoryCounter {
+  id            Int      @id @default(1)
+  totalCapacity Int      @default(450)
+  reserved      Int      @default(0)
+  updatedAt     DateTime @updatedAt
+}
+
+model Admin {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+}
+
+model Waitlist {
+  id        String   @id @default(cuid())
+  name      String
+  phone     String
+  email     String
+  createdAt DateTime @default(now())
+}
