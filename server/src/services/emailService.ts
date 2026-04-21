@@ -8,6 +8,7 @@ export interface EmailPayload {
   language: string;
   invoicePath: string;
   total: number;
+  invoiceUrl?: string;
 }
 
 const OWNER_EMAIL = 'mo.businessdeal@gmail.com';
@@ -35,6 +36,13 @@ export async function sendBookingConfirmationEmail(payload: EmailPayload): Promi
     ? `تأكيد حجزك — ${payload.reference} | سمارت سيرفس`
     : `Booking Confirmed — ${payload.reference} | Smart Service`;
 
+  const invoiceLinkAr = payload.invoiceUrl
+    ? `<p style="text-align:center; margin:16px 0;"><a href="${payload.invoiceUrl}" style="background:#b04a2a; color:#f5ecd9; padding:12px 28px; border-radius:6px; text-decoration:none; font-weight:bold;">تحميل الفاتورة</a></p>`
+    : '';
+  const invoiceLinkEn = payload.invoiceUrl
+    ? `<p style="text-align:center; margin:16px 0;"><a href="${payload.invoiceUrl}" style="background:#b04a2a; color:#f5ecd9; padding:12px 28px; border-radius:6px; text-decoration:none; font-weight:bold;">Download Invoice</a></p>`
+    : '';
+
   const html = isAr
     ? `<div dir="rtl" style="font-family: Arial, sans-serif; color: #231712; max-width:600px; margin:0 auto;">
         <div style="background:#b04a2a; padding:20px 24px; border-radius:8px 8px 0 0;">
@@ -50,7 +58,8 @@ export async function sendBookingConfirmationEmail(payload: EmailPayload): Promi
           <p style="background:#fff8ee; border-right:4px solid #b04a2a; padding:12px; border-radius:4px;">
             يرجى إتمام التحويل البنكي وإرسال صورة الإيصال عبر واتساب مع ذكر رقم الحجز.
           </p>
-          <p>فاتورتك الأولية مرفقة بهذا البريد الإلكتروني.</p>
+          ${invoiceLinkAr}
+          <p style="font-size:13px; color:#6b5040;">إذا لم يعمل الرابط، يمكنك تحميل الفاتورة من خلال: ${payload.invoiceUrl || ''}</p>
           <hr style="border:none; border-top:1px solid #ede0c4; margin:20px 0;"/>
           <p style="color:#4a342a; font-size:12px; text-align:center;">سمارت سيرفس — جدة، المملكة العربية السعودية</p>
         </div>
@@ -69,18 +78,21 @@ export async function sendBookingConfirmationEmail(payload: EmailPayload): Promi
           <p style="background:#fff8ee; border-left:4px solid #b04a2a; padding:12px; border-radius:4px;">
             Please complete the bank transfer and send a photo of the receipt via WhatsApp, quoting your booking reference.
           </p>
-          <p>Your proforma invoice is attached to this email.</p>
+          ${invoiceLinkEn}
+          <p style="font-size:13px; color:#6b5040;">If the button doesn't work, download your invoice here: ${payload.invoiceUrl || ''}</p>
           <hr style="border:none; border-top:1px solid #ede0c4; margin:20px 0;"/>
           <p style="color:#4a342a; font-size:12px; text-align:center;">Smart Service — Jeddah, Saudi Arabia</p>
         </div>
       </div>`;
 
   let attachments: { filename: string; content: Buffer }[] = [];
-  try {
-    const buf = fs.readFileSync(payload.invoicePath);
-    attachments = [{ filename: `invoice-${payload.reference}.pdf`, content: buf }];
-  } catch {
-    console.warn('[EmailService] Could not read invoice file for attachment');
+  if (payload.invoicePath) {
+    try {
+      const buf = fs.readFileSync(payload.invoicePath);
+      attachments = [{ filename: `invoice-${payload.reference}.pdf`, content: buf }];
+    } catch {
+      console.warn('[EmailService] Invoice file not available, sending email without attachment');
+    }
   }
 
   await resend.emails.send({

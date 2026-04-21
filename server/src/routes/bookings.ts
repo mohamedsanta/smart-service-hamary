@@ -77,16 +77,16 @@ router.post('/', async (req: Request, res: Response) => {
   const publicUrl = process.env.PUBLIC_URL || 'http://localhost:3001';
   const invoiceUrl = `${publicUrl}/api/invoices/${reference}`;
 
-  if (invoicePath) {
-    sendBookingConfirmationEmail({
-      to: booking.email,
-      customerName: booking.customerName,
-      reference: booking.reference,
-      language: booking.language,
-      invoicePath,
-      total: booking.total,
-    }).catch((err) => console.error('[Email] Failed:', err));
-  }
+  // Send email regardless of whether PDF was generated — attach PDF only if available
+  sendBookingConfirmationEmail({
+    to: booking.email,
+    customerName: booking.customerName,
+    reference: booking.reference,
+    language: booking.language,
+    invoicePath,
+    total: booking.total,
+    invoiceUrl,
+  }).catch((err) => console.error('[Email] Failed:', err));
 
   const waLink = buildBusinessWhatsAppLink(reference, data.quantity, data.language, invoiceUrl);
 
