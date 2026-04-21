@@ -183,7 +183,7 @@ export async function generateInvoicePDF(booking: BookingData, storagePath: stri
 
   // ── Bank transfer details ─────────────────────────────────────
   doc.setFillColor(...CREAM_DEEP);
-  doc.roundedRect(margin, afterSummary, W - margin * 2, 50, 2, 2, 'F');
+  doc.roundedRect(margin, afterSummary, W - margin * 2, 58, 2, 2, 'F');
 
   doc.setFontSize(9);
   doc.setFont('helvetica', 'bold');
@@ -197,9 +197,10 @@ export async function generateInvoicePDF(booking: BookingData, storagePath: stri
   const bankVal = margin + 40;
   const lines: [string, string][] = [
     ['Beneficiary:', 'Smart Service'],
-    ['Bank:', 'Al Maryah Community Bank LLC'],
-    ['Account No.:', '3003921510000001'],
-    ['IBAN:', 'AE860973003921510000001'],
+    ['Bank:', 'Saudi Awwal Bank (SAB)'],
+    ['Account No.:', '033475500001'],
+    ['IBAN:', 'SA6045000000033475500001'],
+    ['SWIFT:', 'SABBSARI'],
     ['Transfer Reference:', booking.reference],
   ];
   lines.forEach(([label, value], i) => {
@@ -212,9 +213,9 @@ export async function generateInvoicePDF(booking: BookingData, storagePath: stri
 
   doc.setFontSize(8);
   doc.setTextColor(100, 80, 60);
-  doc.text('* Please include your booking reference in the transfer description.', bankLeft, afterSummary + 47);
+  doc.text('* Please include your booking reference in the transfer description.', bankLeft, afterSummary + 55);
 
-  const afterBank = afterSummary + 58;
+  const afterBank = afterSummary + 66;
 
   // ── Guaranteed specifications ─────────────────────────────────
   doc.setFontSize(9);
