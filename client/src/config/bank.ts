@@ -4,9 +4,9 @@
 // ============================================================
 export const bankDetails = {
   beneficiaryName: 'Smart Service',
-  bankName: '[PLACEHOLDER — Bank Name]',
-  accountNumber: '[PLACEHOLDER — Account Number]',
-  iban: 'SA00 0000 0000 0000 0000 0000',
+  bankName: '[ Al Maryah Community Bank LLC]',
+  accountNumber: '[3003921510000001]',
+  iban: 'AE860973003921510000001',
   swift: '[PLACEHOLDER — SWIFT]',
   branch: 'Jeddah',
   notes: {
